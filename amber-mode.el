@@ -32,8 +32,8 @@
 (defconst amber-keywords
   '("fun" "let" "return" "const" "ref" "pub" "import" "from" "main" "as" "test"
     "if" "else" "and" "not" "then" "is"
-    "fail" "failed" "trust" "silent"
-    "loop" "for" "in" "break" "continue"))
+    "fail" "failed" "trust" "silent" "succeeded" "exited"
+    "loop" "for" "in" "break" "continue" "while"))
 
 (defconst amber-types
   '("Text" "Num" "Bool" "Null" "Int"))
@@ -42,7 +42,8 @@
   '("true" "false" "null"))
 
 (defconst amber-builtins
-  '("echo" "cd" "len" "lines" "mv" "nameof"))
+  '("cd" "echo" "exit" "len" "lines" "mv" "nameof" "await" "cp" "rm" "sleep"
+    "touch" "lock" "clear" "pwd" "pid" "disown" "shellname" "shellversion"))
 
 (defconst amber--font-lock-defaults
   `(((,(regexp-opt amber-keywords 'symbols) . font-lock-keyword-face)
