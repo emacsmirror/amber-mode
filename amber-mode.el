@@ -1,28 +1,62 @@
-;;; text
+;;; amber-mode.el --- A major mode for the Amber programming language -*- lexical-binding: t -*-
+
+;; Author: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
+;; Maintainer: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
+;; URL: https://codeberg.org/GeorgGD/amber-mode
+;; Version: 0.0.1
+;; Package-Requires: ((emacs "26.1"))
+;; Keywords: amber, languages
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; A major mode for the Amber programming languages.
+
+;; See documentation on https://codeberg.org/GeorgGD/amber-mode
+
+;;; Code:
 (require 'syntax)
 
+(defconst amber-keywords
+  '("fun" "let" "return" "const" "ref" "pub" "import" "from" "main" "as" "test"
+    "if" "else" "and" "not" "then" "is"
+    "fail" "failed" "trust" "silent"
+    "loop" "for" "in" "break" "continue"))
+
+(defconst amber-types
+  '("Text" "Num" "Bool" "Null" "Int"))
+
+(defconst amber-consts
+  '("true" "false" "null"))
+
+(defconst amber-builtins
+  '("echo" "cd" "len" "lines" "mv" "nameof"))
+
 (defconst amber--font-lock-defaults
-  (let ((keywords '(    ;; Keyworks
-                    "fun" "let" "return" "const" "ref" "pub" "import" "from" "main" "as"
+  `(((,(regexp-opt amber-keywords 'symbols) . font-lock-keyword-face)
+     (,(regexp-opt amber-consts 'symbols) . font-lock-constant-face)
+     (,(regexp-opt amber-types 'symbols) . font-lock-type-face)
+     (,(regexp-opt amber-builtins 'symbols) . font-lock-builtin-face)
 
-                    ;; Conditional
-                    "if" "else" "and" "not" "then"
-
-                    ;; Commands
-                    "fail" "failed" "trust" "silent"
-
-                    ;; Loops
-                    "loop" "for" "in" "break" "continue"
-
-                    ;; Builtins
-                    "echo" "cd" "len" "lines" "mv" "nameof"))
-        (types '("Text" "Num" "Bool" "Null" "Int"))
-        (const '("true" "false" "null")))
-    `(((, (rx-to-string `(: (or ,@keywords))) 0 font-lock-keyword-face)
-       ("\\([[:word:]]+\\)\s*(" 0 font-lock-function-name-face)
-       (, (rx-to-string `(: (or ,@types))) 0 font-lock-type-face)
-       (, (rx-to-string `(: (or ,@const))) 0 font-lock-constant-face)
-       ))))
+     ("\\_<fun\\_>[ \t]+\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 font-lock-function-name-face)
+     ("\\_<\\([A-Za-z_][A-Za-z0-9_]*\\)[ \t]*(" 1 font-lock-function-name-face)
+     ("\\_<let\\_>[ \t]+\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 font-lock-variable-name-face)
+     ("\\_<const\\_>[ \t]+\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 font-lock-variable-name-face)
+     ("\\([[:alpha:]_][[:alnum:]_]*\\)\\(?:\\s-*:\\s-*\\([^,)]*\\)\\)?" 1 font-lock-variable-name-face)
+     ("//[/!][^/]" 1 font-lock-doc-face)
+     )))
 
 (defun amber-calculate-indentation ()
   "Return the column to which the current line should be indented."
@@ -42,11 +76,15 @@
 (defun amber-mode-syntax-table ()
   "Syntax table for `amber-mode'."
   (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?/ "." table)
-    (modify-syntax-entry ?/ "." table)
+
+    (dolist (i '(?+ ?- ?* ?/ ?% ?| ?= ?< ?> ?,))
+      (modify-syntax-entry i "." table))
+
+    (modify-syntax-entry ?/  ". 12" table)
     (modify-syntax-entry ?\n ">" table)
 
     (modify-syntax-entry ?\" "\"" table)
+    (modify-syntax-entry ?\' "\"" table)
     (modify-syntax-entry ?\\ "\\" table)
 
     ;; Curly braces for interpolation
