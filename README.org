@@ -12,6 +12,17 @@ The package is available on [[https://melpa.org/#/getting-started][MELPA]]. Add 
 (use-package amber-mode)
 #+end_src
 
+*** Manually
+If you can't access MELPA (or if the package isn't available there) you can manually install ~amber-mode~ by cloning the repo.
+Then add the following in your ~init.el~
+
+#+begin_src emacs-lisp
+(unless (version< emacs-version "26")
+  (add-to-list 'load-path "~/path/to/your/amber-mode/")
+  (autoload 'amber-mode "amber-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.ab\\'" . amber-mode)))
+#+end_src
+
 ** Features
 As of the time of writing, ~amber-mode~ can do the following:
 - Syntax highlighting
