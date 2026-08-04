@@ -97,6 +97,7 @@
     (modify-syntax-entry ?$ "\"" table)
     table))
 
+;;;###autoload
 (define-derived-mode amber-mode prog-mode "Amber"
   "A major mode for the Amber programming language."
   :syntax-table (amber-mode-syntax-table)
@@ -108,6 +109,7 @@
   (setq-local tab-width 4)
   (setq-local indent-tabs-mode t))
 
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.ab\\'" . amber-mode))
 
 (provide 'amber-mode)
