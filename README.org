@@ -1,4 +1,7 @@
-* amber-mode
+#+title: Amber-mode
+#+author: Georgios Davakos
+#+language: en
+
 An Emacs major-mode for syntax highlighting and automatic indentation when working with the [[https://amber-lang.com/][Amber programming language]]. Requires Emacs 26.1 or later.
 
 ** Installation

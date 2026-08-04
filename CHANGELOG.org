@@ -1,0 +1,8 @@
+#+title: amber-mode.el - Changelog
+#+author: Georgios Davakos
+#+language: en
+
+* Version 1.0.0 (2026-08-04)
+- Initial release of ~amber-mode~
+  - Supports syntax highlighting
+  - Automatic indentation 
