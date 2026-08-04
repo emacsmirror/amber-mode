@@ -2,9 +2,10 @@
 
 ;; Author: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
 ;; Maintainer: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
-;; URL: https://codeberg.org/GeorgGD/amber-mode
+;; Created: 2026
 ;; Version: 1.0.0
 ;; Package-Requires: ((emacs "26.1"))
+;; URL: https://codeberg.org/GeorgGD/amber-mode
 ;; Keywords: amber, languages
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -27,6 +28,7 @@
 ;; See documentation on https://codeberg.org/GeorgGD/amber-mode
 
 ;;; Code:
+
 (require 'syntax)
 
 (defconst amber-keywords
