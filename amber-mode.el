@@ -3,7 +3,7 @@
 ;; Author: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
 ;; Maintainer: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
 ;; URL: https://codeberg.org/GeorgGD/amber-mode
-;; Version: 0.0.1
+;; Version: 1.0.0
 ;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: amber, languages
 
@@ -101,7 +101,6 @@
   (setq-local comment-start "// ")
   (setq-local comment-start-skip "//+ *")
   (setq-local comment-end "")
-  (setq buffer-file-coding-system 'utf-8-unix) ;; might be redundent
   (setq font-lock-defaults amber--font-lock-defaults)
   (setq-local indent-line-function 'amber-indent-line)
   (setq-local tab-width 4)
