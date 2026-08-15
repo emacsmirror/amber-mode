@@ -3,7 +3,7 @@
 ;; Author: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
 ;; Maintainer: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
 ;; Created: 2026
-;; Version: 1.0.0
+;; Version: 1.1.0
 ;; Package-Requires: ((emacs "26.1"))
 ;; URL: https://codeberg.org/GeorgGD/amber-mode
 ;; Keywords: amber, languages
@@ -31,9 +31,65 @@
 
 (require 'syntax)
 
+(defcustom amber-amber-bin "amber"
+  "Path to Amber executable."
+  :type 'file
+  :safe #'stringp)
+
+(defun amber--run-cmd (cmd &optional source &rest args)
+  "Use compile command to execute an Amber CMD with ARGS if given.
+If given a SOURCE, execute the CMD on it."
+  (let ((cmd-args (if source (cons source args) args))
+        (default-directory (project-root (project-current))))
+    (save-some-buffers)
+    (compilation-start (mapconcat 'shell-quote-argument
+                                  `(,amber-amber-bin ,cmd ,@cmd-args) " "))))
+
+(defun amber-relative-path ()
+  "Return the relative path from project root to current buffer."
+  (let* ((root (project-root (project-current)))
+         (file (buffer-file-name))
+         (relative-path (file-relative-name file root)))
+    (if (and root file)
+        (file-relative-name file root)
+      (error "Not in a project or buffer is not visiting a file"))))
+
+;;;###autoload
+(defun amber-check ()
+  "Checks the Amber script for error."
+  (interactive)
+  (amber--run-cmd "check" (amber-relative-path)))
+
+;;;###autoload
+(defun amber-test ()
+  "Runs the Amber tests."
+  (interactive)
+  (amber--run-cmd "test" (amber-relative-path)))
+
+;;;###autoload
+(defun amber-run ()
+  "Executes the Amber script."
+  (interactive)
+  (amber--run-cmd "run" (amber-relative-path)))
+
+;;;###autoload
+(defun amber-build ()
+  "Compile the Amber script to Bash."
+  (interactive)
+  (amber--run-cmd "build" (amber-relative-path)))
+
+(defvar amber-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-c C-c c") #'amber-check)
+    (define-key map (kbd "C-c C-c t") #'amber-test)
+    (define-key map (kbd "C-c C-c r") #'amber-run)
+    (define-key map (kbd "C-c C-c b") #'amber-build)
+    map)
+  "Keymap for Amber major mode.")
+
 (defconst amber-keywords
   '("fun" "let" "return" "const" "ref" "pub" "import" "from" "main" "as" "test"
-    "if" "else" "and" "not" "then" "is"
+    "if" "else" "and" "not" "then" "is" "or"
     "fail" "failed" "trust" "silent" "succeeded" "exited"
     "loop" "for" "in" "break" "continue" "while"))
 
