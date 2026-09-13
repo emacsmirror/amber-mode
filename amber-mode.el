@@ -4,7 +4,7 @@
 ;; Maintainer: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
 ;; Created: 2026
 ;; Version: 1.1.0
-;; Package-Requires: ((emacs "26.1"))
+;; Package-Requires: ((emacs "28.1"))
 ;; URL: https://codeberg.org/GeorgGD/amber-mode
 ;; Keywords: amber, languages
 
@@ -30,11 +30,18 @@
 ;;; Code:
 
 (require 'syntax)
+(require 'project)
+
+(defgroup amber-mode nill
+  "Support for Amber code."
+  :link '(url-link "https://amber-lang.com/")
+  :group 'languages)
 
 (defcustom amber-amber-bin "amber"
   "Path to Amber executable."
   :type 'file
-  :safe #'stringp)
+  :safe #'stringp
+  :group 'amber-mode)
 
 (defun amber--run-cmd (cmd &optional source &rest args)
   "Use compile command to execute an Amber CMD with ARGS if given.
@@ -42,14 +49,13 @@ If given a SOURCE, execute the CMD on it."
   (let ((cmd-args (if source (cons source args) args))
         (default-directory (project-root (project-current))))
     (save-some-buffers)
-    (compilation-start (mapconcat 'shell-quote-argument
+    (compilation-start (mapconcat #'shell-quote-argument
                                   `(,amber-amber-bin ,cmd ,@cmd-args) " "))))
 
 (defun amber-relative-path ()
   "Return the relative path from project root to current buffer."
   (let* ((root (project-root (project-current)))
-         (file (buffer-file-name))
-         (relative-path (file-relative-name file root)))
+         (file (buffer-file-name)))
     (if (and root file)
         (file-relative-name file root)
       (error "Not in a project or buffer is not visiting a file"))))
@@ -114,8 +120,7 @@ If given a SOURCE, execute the CMD on it."
      ("\\_<let\\_>[ \t]+\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 font-lock-variable-name-face)
      ("\\_<const\\_>[ \t]+\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 font-lock-variable-name-face)
      ("\\([[:alpha:]_][[:alnum:]_]*\\)\\(?:\\s-*:\\s-*\\([^,)]*\\)\\)?" 1 font-lock-variable-name-face)
-     ("//[/!][^/]" 1 font-lock-doc-face)
-     )))
+     ("//[/!][^/]" 1 font-lock-doc-face))))
 
 (defun amber-calculate-indentation ()
   "Return the column to which the current line should be indented."
@@ -161,7 +166,7 @@ If given a SOURCE, execute the CMD on it."
   (setq-local comment-start-skip "//+ *")
   (setq-local comment-end "")
   (setq font-lock-defaults amber--font-lock-defaults)
-  (setq-local indent-line-function 'amber-indent-line)
+  (setq-local indent-line-function #'amber-indent-line)
   (setq-local tab-width 4)
   (setq-local indent-tabs-mode t))
 
