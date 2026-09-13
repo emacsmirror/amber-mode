@@ -32,16 +32,11 @@
 (require 'syntax)
 (require 'project)
 
-(defgroup amber-mode nill
-  "Support for Amber code."
-  :link '(url-link "https://amber-lang.com/")
-  :group 'languages)
-
 (defcustom amber-amber-bin "amber"
   "Path to Amber executable."
   :type 'file
   :safe #'stringp
-  :group 'amber-mode)
+  :group 'languages)
 
 (defun amber--run-cmd (cmd &optional source &rest args)
   "Use compile command to execute an Amber CMD with ARGS if given.
