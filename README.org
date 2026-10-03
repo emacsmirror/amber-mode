@@ -5,7 +5,7 @@
 An Emacs major-mode for syntax highlighting and automatic indentation when working with the [[https://amber-lang.com/][Amber programming language]]. Requires Emacs 26.1 or later.
 
 ** Installation
-*** MELPA (wip)
+*** MELPA
 The package is available on [[https://melpa.org/#/getting-started][MELPA]]. Add this to your init.el.
 
 #+begin_src emacs-lisp
@@ -13,7 +13,7 @@ The package is available on [[https://melpa.org/#/getting-started][MELPA]]. Add 
 #+end_src
 
 *** Manually
-If you can't access MELPA (or if the package isn't available there) you can manually install ~amber-mode~ by cloning the repo.
+If you can't access MELPA you can manually install ~amber-mode~ by cloning the repo.
 Then add the following in your ~init.el~
 
 #+begin_src emacs-lisp
