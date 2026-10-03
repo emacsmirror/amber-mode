@@ -3,7 +3,7 @@
 ;; Author: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
 ;; Maintainer: Georgios Davakos (GeorgGD) <georgios.davakos@protonmail.com>
 ;; Created: 2026
-;; Version: 1.1.0
+;; Version: 1.1.1
 ;; Package-Requires: ((emacs "28.1"))
 ;; URL: https://codeberg.org/GeorgGD/amber-mode
 ;; Keywords: amber, languages
